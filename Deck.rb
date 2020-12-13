@@ -1,5 +1,5 @@
 class Deck
-  attr_reader :cards
+  attr_accessor :cards
   def initialize
     CARD_SIGNS.each do |sign|
       CARD_NUMS.each do |num|

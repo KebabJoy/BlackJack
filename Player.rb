@@ -1,5 +1,5 @@
 class Player
-  attr_reader :cash
+  attr_reader :cash; :points
   attr_accessor :hand_cards
 
   def initialize
