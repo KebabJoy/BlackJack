@@ -1,29 +1,13 @@
-class Dealer
+require_relative 'Player'
+
+class Dealer < Player
   attr_reader :hand_cards; :points
   def initialize
-    @cash ||= 100
-    @points ||= 0
-  end
-
-  def bet
-    @cash -= 10
+    super(:dealer)
   end
 
   def autoplay
-    skip if @points > 17
-    take_card if @points < 17
+    draw_card if @points < 17
+    count_points
   end
-
-  def skip
-
-  end
-
-  def open_cards
-
-  end
-
-  def take_card
-
-  end
-
 end
