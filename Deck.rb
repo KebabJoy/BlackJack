@@ -1,15 +1,19 @@
+require_relative 'card'
+
 class Deck
   attr_accessor :cards
+
   def initialize
-    CARD_SIGNS.each do |sign|
-      CARD_NUMS.each do |num|
-        @cards << "#{sign}#{num}"
+    Card::CARD_SUITS.each do |suit|
+      Card::CARD_VALUES.each do |value|
+        @cards << Card.new(suit,value)
       end
     end
   end
 
-  CARD_SIGNS = %w[♠ ♥ ♦ ♣]
-  CARD_NUMS = [2,3,4,5,6,7,8,9,10,'J','Q','K','A']
+  def card
+    @cards.delete(@cards.sample)
+  end
 
   def shuffle_cards
     @cards.shuffle

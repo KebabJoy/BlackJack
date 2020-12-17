@@ -4,20 +4,11 @@ require 'Game'
 require 'Player'
 
 class Interface
-  attr_reader :game; :current_player
-
   def initialize
-    create_players
-    @game = Game.new(@dealer,@player,Deck.new)
+    puts "Enter your name:"
+    name = gets.chomp
+    @game = Game.new(Dealer.new,Player.new(name),Deck.new)
     start_game
-  end
-
-  def create_players
-      puts "Enter your name:"
-      name = gets.chomp
-      @player = Player.new(name)
-      @dealer = Dealer.new
-      @players = [@player, @dealer]
   end
 
   def start_game
@@ -49,11 +40,11 @@ class Interface
 
   def results
     puts "Dealer's cards:"
-    @dealer.hand_cards.each do |card|
+    @game.dealer.hand.cards.each do |card|
       print "#{card}"
     end
     puts "Your cards:"
-    @player.hand_cards.each do |card|
+    @game.current_player.hand.cards.each do |card|
       print "#{card} "
     end
     puts
@@ -77,11 +68,11 @@ class Interface
 
   def print_table
     puts "Dealer's cards"
-    @dealer.hand_cards.length.times do
+    @game.dealer.hand.cards.length.times do
       print '*'
     end
     puts "Your cards"
-    @player.hand_cards.each do |card|
+    @game.current_player.hand.cards.each do |card|
       print "#{card} "
     end
     puts

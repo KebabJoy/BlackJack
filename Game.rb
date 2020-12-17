@@ -1,5 +1,5 @@
 class Game
-  attr_reader :current_player; :table_money; :deck; :game_on; :current_bet
+  attr_reader :current_player; :deck; :game_on; :current_bet; :dealer
   def initialize(dealer, player, deck)
     @player = player
     @dealer = dealer
@@ -16,17 +16,16 @@ class Game
 
   def deal_cards
     %w[player dealer].each do |player|
-      [0..1].each do |i|
-        "@#{player}".hand_cards << @deck.cards.sample
-        @deck.cards.delete("@#{player}".hand_cards[i])
+      2.times do
+        "@#{player}".hand.draw_card
       end
     end
   end
 
   def return_cards_to_deck
     %w[player dealer].each do |player|
-      player.hand_cards.each do |card|
-        player.hand_cards.delete(card)
+      player.hand.cards.each do |card|
+        player.hand.cards.delete(card)
         @deck.cards << card
       end
     end
@@ -37,20 +36,20 @@ class Game
   end
 
   def end?
-    end! if (@player.hand_cards.length >= 3 && @dealer.hand_cards.length >= 3)
+    end! if (@player.hand.cards.length >= 3 && @dealer.hand.cards.length >= 3)
   end
 
   def winner
-    if @player.points == @dealer.points
+    if @player.hand.points == @dealer.hand.points
       @winner = "Nobody"
-      @player.cash += 10
-      @dealer.cash += 10
-    elsif @player.points > @dealer.points
+      @player.cash += @current_bet / 2
+      @dealer.cash += @current_bet / 2
+    elsif @player.hand.points > @dealer.hand.points
       @winner = "Player"
-      @player.cash += 20
+      @player.cash += @current_bet
     else
       @winner = "Dealer"
-      @dealer.cash += 20
+      @dealer.cash += @current_bet
     end
     @current_bet = 0
   end
@@ -64,13 +63,7 @@ class Game
   end
 
   def next_player #First I was making multiplayer game but then I read the task and stopped inventing a bike. But the some methods left
-    @current_player = (@current_player == @players[0]) ? @players[1] : @players[0]
-  end
-
-  def draw_card
-    @current_player.hand_cards << @deck.cards.sample
-    @deck.delete(@current_player.hand_cards.last)
-    @current_player.count_points
+    @current_player = (@current_player == @player) ? @dealer : @player
   end
 
   def bets
